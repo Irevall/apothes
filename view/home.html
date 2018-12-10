@@ -6,8 +6,48 @@
     <link rel="stylesheet" type="text/css" href="../node_modules/normalize.css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="style/generic.css"/>
     <title>Avatars for Steam</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.gallery').querySelectorAll('img').forEach((img) => {
+                img.addEventListener('click', () => {
+                    let temp = document.getElementsByTagName('template')[0].content;
+                    temp.querySelector('.sizes').querySelectorAll('img').forEach((img2) => {
+                        img2.src = img.src
+                    });
+                    console.log(img);
+                    temp.querySelector('.author').innerHTML = img.dataset.imageAuthor;
+                    temp.querySelector('.source').href = img.dataset.imageSource;
+                    let clone = temp.cloneNode(true);
+                    document.body.querySelector('main').appendChild(clone);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
+<template>
+    <div class="popout">
+        <div class="sizes">
+            <div class="img-full">
+                <span>184 px</span>
+                <img src=""/>
+            </div>
+            <div class="img-medium">
+                <span>120 px</span>
+                <img src=""/>
+            </div>
+            <div class="img-small">
+                <span>Discord</span>
+                <img src=""/>
+            </div>
+        </div>
+        <div class="informations">
+            <span class="tags">#test #test #test #test #test #test #test #test #test #test #test #test #test #test #test #test #test #test</span>
+            <span>Author: <span class="author"></span></span>
+            <a class="source" href="" target="_blank"><span>Source</span></span></a>
+        </div>
+    </div>
+</template>
 <nav>
     <img class="logo" src="img/temp_logo.png" alt="Logo"/>
     <span>TOP</span>
@@ -15,6 +55,32 @@
     <span>About</span>
 </nav>
 <main>
+    <div class="gallery">
+        <div class="image">
+            <img src="../db/images/image01.jpg" data-image-id="1" data-image-author="Protorc" data-image-source="https://www.deviantart.com/protorc/art/Life-is-strange-Broken-butterfly-573976425" data-image-tags="#Life is Strange#Chloe"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image02.jpg"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image03.jpg"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image04.jpg"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image05.jpg"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image06.jpg"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image07.jpg"/>
+        </div>
+        <div class="image">
+            <img src="../db/images/image08.jpg"/>
+        </div>
+    </div>
 </main>
 </body>
 </html>

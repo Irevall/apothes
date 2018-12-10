@@ -3,20 +3,25 @@
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: #1b2838;
+    color: #b8b6b4;
+}
+
+a {
+    text-decoration: none;
+    color: #b8b6b4;
 }
 
 nav {
     display: flex;
     background-color: #171a21;
-    color: #b8b6b4;
     font-size: 1.7em;
     height: 50px;
-    padding: 5px 0 5px 10px;
+    padding: 5px 0 5px 20px;
     border-bottom: black 2px solid;
 }
 
 nav > * {
-    margin-right: 30px;
+    margin-right: 50px;
 }
 
 nav > span {
@@ -30,7 +35,88 @@ nav > span {
     max-height: 100%;
 }
 
-/*main {*/
-  /*display: grid;*/
-  /*grid-template-columns: auto repeat(5, 184px) auto;*/
-/*}*/
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 184px);
+    gap: 48px;
+    margin: 24px auto 0 auto;
+    width: max-content;
+}
+
+.gallery > .image > img {
+    width: 184px;
+}
+
+.popout {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*flex: 1;*/
+    width: max-content;
+    height: max-content;
+    margin: auto;
+    padding: 10px;
+    background-color: #172438;
+}
+
+.popout > .sizes {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    size: 1.2em;
+    font-weight: bold;
+}
+
+.popout > .sizes > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.popout > .sizes > div:not(:last-child) {
+    margin-right: 10px;
+}
+
+.popout > .sizes > * > span {
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.popout > .sizes > * > *:not(span) {
+    margin: 0 auto;
+}
+
+.popout > .sizes > .img-full > img {
+    width: 184px;
+    height: 184px;
+}
+
+.popout > .sizes > .img-medium > img {
+    width: 120px;
+    height: 120px;
+}
+
+.popout > .sizes > .img-small > img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.popout > .informations {
+    display: flex;
+    flex-direction: column;
+    max-width: calc(184px + 120px + 64px + 20px);
+}
+
+.informations span{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.informations .source {
+
+}
