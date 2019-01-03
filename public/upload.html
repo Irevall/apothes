@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="style/generic.css"/>
+    <link rel="stylesheet" type="text/css" href="style/upload.css"/>
+    <title>Avatars for Steam - Upload</title>
+</head>
+<body>
+<nav>
+    <a href="index.html"><img class="logo" src="img/temp_logo.png" alt="Logo"/></a>
+    <span>TOP</span>
+    <span><a href="upload.html">Upload</a></span>
+    <span>About</span>
+</nav>
+
+<main>
+    <form method="post" enctype="multipart/form-data">
+        <label>Choose image to upload (.png) <input type="file" class="img_upload" name="img_upload" accept=".png"></label>
+        <label>Source: <input type="text" id="source" name="source"/></label>
+        <label>Submit <input type="submit"/></label>
+    </form>
+</main>
+</body>
+</html>

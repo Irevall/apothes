@@ -18,6 +18,11 @@
   "homepage": "https://github.com/Irevall/steam-avatars#readme",
   "dependencies": {
     "koa": "^2.6.2",
+    "koa-better-body": "^3.0.4",
+    "koa-better-router": "^2.1.1",
+    "koa-body": "^4.0.6",
+    "koa-bodyparser": "^4.2.1",
+    "koa-multer": "^1.0.2",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "normalize.css": "^8.0.1",
