@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="style/upload.css"/>
     <script src="script/image_size_validation.js"></script>
     <script src="script/image_selection.js"></script>
+    <script src="script/image_upload.js"></script>
     <title>Avatars for Steam - Upload</title>
 </head>
 <body>
@@ -25,12 +26,13 @@
     </div>
 
     <form method="post" enctype="multipart/form-data">
-        <label>Choose image to upload (.png) <input type="file" class="img_upload" name="img_upload" accept=".png"></label>
-        <label><input type="text" id="source" name="source" placeholder="Source"/></label>
-        <label><input type="submit"/></label>
+        <label>Choose image to upload (.png) <input type="file" class="img-upload" name="img-upload" accept=".png"></label>
+        <p id="resolution-warning">Selected file appears to be too small. Minimal size is 184x184.</p>
+        <p id="ext-warning">Selected file appears to be in wrong format. Only .png accepted.</p>
+        <label><input type="text" id="img-source" name="img-source" placeholder="Source"/></label>
+        <label><input type="button" id="img-upload" value="Submit"/></label>
     </form>
-
-    <div class="test"></div>
+    <div id="test"></div>
 </main>
 </body>
 </html>

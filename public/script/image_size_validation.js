@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const fileInput = document.querySelector('.img_upload');
+    const fileInput = document.querySelector('.img-upload');
 
     function getSelectedFile() {
         const isFileSelected = fileInput && fileInput.files && fileInput.files[0];
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#preview').querySelector('img').src = valid[1]
         } else {
             console.log('Too small');
+            fileInput.value = null;
         }
     }
 

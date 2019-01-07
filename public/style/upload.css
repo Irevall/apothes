@@ -9,17 +9,21 @@ main {
     margin: 50px auto 0;
 }
 
-main > form {
+form {
     display: flex;
     flex-direction: column;
     max-width: max-content;
 }
 
-main > form > * {
-    margin-bottom: 5px;
+form > * {
+    margin: 0 0 5px;
 }
 
-#source {
+form > p {
+    display: none;
+}
+
+#img-source {
     padding: 2px;
     background: none;
     border: var(--element-border);
@@ -27,34 +31,41 @@ main > form > * {
     color: #b8b6b4;
 }
 
-#source::placeholder {
+#img-source::placeholder {
     color: #b8b6b4;
 }
 
 #preview {
+    margin: 0 auto 15px;
     min-width: 184px;
     min-height: 184px;
+    width: max-content;
+    height: max-content;
     border: var(--element-border);
-    margin-bottom: 15px;
 }
 
 #preview > img {
+    -webkit-user-drag: none;
     user-select: none;
-}
-
-#preview:hover {
-    cursor: grabbing;
+    max-width: 800px;
+    max-height: 600px;
 }
 
 #selection {
+    display: none;
     position: absolute;
     margin: 0;
     padding: 0;
     width: 184px;
     height: 184px;
     border: 3px solid red;
+    box-sizing: border-box;
 }
 
-.img_upload {
+#selection:hover {
+    cursor: grab;
+}
+
+.img-upload {
     display: none;
 }
