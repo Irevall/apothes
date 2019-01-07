@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="normalize.css"/>
     <link rel="stylesheet" type="text/css" href="style/generic.css"/>
     <link rel="stylesheet" type="text/css" href="style/upload.css"/>
+    <script src="script/image_size_validation.js"></script>
+    <script src="script/image_selection.js"></script>
     <title>Avatars for Steam - Upload</title>
 </head>
 <body>
@@ -17,11 +19,18 @@
 </nav>
 
 <main>
+    <div id="preview">
+        <div id="selection"></div>
+        <img src=""/>
+    </div>
+
     <form method="post" enctype="multipart/form-data">
         <label>Choose image to upload (.png) <input type="file" class="img_upload" name="img_upload" accept=".png"></label>
-        <label>Source: <input type="text" id="source" name="source"/></label>
-        <label>Submit <input type="submit"/></label>
+        <label><input type="text" id="source" name="source" placeholder="Source"/></label>
+        <label><input type="submit"/></label>
     </form>
+
+    <div class="test"></div>
 </main>
 </body>
 </html>
