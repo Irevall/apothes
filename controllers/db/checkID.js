@@ -8,6 +8,7 @@ async function main(id) {
     });
 
     const result = await db.get('SELECT * FROM images WHERE image_id = ?', [id]).catch((err) => {
+        console.log(err);
         return {status: 500, message: 'Database error.'};
     });
 

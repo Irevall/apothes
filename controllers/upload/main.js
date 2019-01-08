@@ -1,6 +1,4 @@
 const fs = require('fs');
-const path = require('path');
-
 const database = require('../db');
 
 function createID() {
@@ -30,18 +28,31 @@ async function createUnique() {
     return id;
 }
 
+function writeFile(id, image) {
+    image = image.replace(/^data:image\/png;base64,/, '');
 
-async function main(file, body) {
-    const reader = fs.createReadStream(file.path);
-    const id = await createUnique();
-    await database.add(id, body).catch((err) => {
-        return {status: 500, message: 'Database error.'};
+    return new Promise(function (resolve, reject) {
+        fs.writeFile(`./database/images_temp/${id}.png`, image, 'base64', (err) => {
+            if (err) {
+                console.log(err);
+                reject(false);
+            } else {
+                resolve(true);
+            }
+        });
     });
-    // fix path to './database/images'
-    const stream = fs.createWriteStream(path.join('./database/images_temp', id + '.png'));
-    reader.pipe(stream);
-    fs.unlink(file.path, (err) => {
-        if (err) throw err;
+}
+
+//add more promises, file validation and delete upload if can't connect to db
+async function main(body) {
+    const id = await createUnique();
+    if (!await writeFile(id, body.image)) {
+        return {status: 500, message: 'File write error.'};
+    }
+
+    await database.add(id, body).catch((err) => {
+        console.log(err);
+        return {status: 500, message: 'Database error.'};
     });
 }
 

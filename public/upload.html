@@ -26,13 +26,18 @@
     </div>
 
     <form method="post" enctype="multipart/form-data">
-        <label>Choose image to upload (.png) <input type="file" class="img-upload" name="img-upload" accept=".png"></label>
+        <label id="img-file-label"><span>Choose</span> image to upload (.png) <input type="file" id="img-file" name="img-file" accept=".png, .jpg, .jpeg"></label>
         <p id="resolution-warning">Selected file appears to be too small. Minimal size is 184x184.</p>
         <p id="ext-warning">Selected file appears to be in wrong format. Only .png accepted.</p>
-        <label><input type="text" id="img-source" name="img-source" placeholder="Source"/></label>
-        <label><input type="button" id="img-upload" value="Submit"/></label>
+        <label id="img-source-label">
+            <input type="text" id="img-source" name="img-source" placeholder="Source" data-tooltip="Some text" data-tooltip-position="bottom"/>
+            <span class="tooltip">Include source like link to original art, name of the author and/or art piece</span>
+        </label>
+        <label><input type="button" id="img-download" value="Download"/> the cropped image</label>
+        <label>Or <input type="button" id="img-upload" value="Upload"/> for everyone to see!</label>
     </form>
     <div id="test"></div>
+    <div id="test2"></div>
 </main>
 </body>
 </html>

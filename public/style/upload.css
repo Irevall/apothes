@@ -12,7 +12,7 @@ main {
 form {
     display: flex;
     flex-direction: column;
-    max-width: max-content;
+    max-width: 300px;
 }
 
 form > * {
@@ -21,6 +21,21 @@ form > * {
 
 form > p {
     display: none;
+    font-weight: bold;
+    color: #aa2112;
+}
+
+#img-file {
+    display: none;
+}
+
+form input[type=button], #img-file-label span {
+    padding: 0;
+    border: none;
+    background: none;
+    font-weight: bolder;
+    color: #8b9eb8;
+    cursor: pointer;
 }
 
 #img-source {
@@ -29,13 +44,46 @@ form > p {
     border: var(--element-border);
     border-radius: 5px;
     color: #b8b6b4;
+    cursor: help;
 }
 
 #img-source::placeholder {
     color: #b8b6b4;
 }
 
+#img-source:focus {
+    cursor: auto;
+    outline: none;
+    border: 3px solid #62738b;
+}
+
+#img-source-label {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#img-source-label > .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
+    padding: 3px;
+    position: absolute;
+    top: 31px;
+    z-index: 1;
+}
+
+#img-source-label:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s linear 0.5s;
+
+}
+
 #preview {
+    position: relative;
     margin: 0 auto 15px;
     min-width: 184px;
     min-height: 184px;
@@ -64,8 +112,4 @@ form > p {
 
 #selection:hover {
     cursor: grab;
-}
-
-.img-upload {
-    display: none;
 }

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.img-upload');
     const selection = document.querySelector('#selection');
     const image = document.querySelector('#preview').querySelector('img');
 
@@ -21,32 +20,30 @@ document.addEventListener('DOMContentLoaded', () => {
         center();
     });
 
-    window.addEventListener('resize', updateBoundaries);
-
     function updateBoundaries() {
-        const clientRect = image.getBoundingClientRect();
-        boundaries.max_size = Math.min(clientRect.height, clientRect.width);
-        boundaries.min_x = clientRect.left;
-        boundaries.min_y = clientRect.top;
-        boundaries.max_x = clientRect.left + clientRect.width;
-        boundaries.max_y = clientRect.top + clientRect.height;
+        boundaries.max_size = Math.min(image.height, image.width);
+        boundaries.max_x = image.width;
+        boundaries.max_y = image.height;
     }
 
     function center() {
-        const clientRect = image.getBoundingClientRect();
-        selection.style.left = `${clientRect.left + (clientRect.width - selectionSize) / 2}px`;
-        selection.style.top = `${clientRect.top + (clientRect.height - selectionSize) / 2}px`;
+        selection.style.left = `${(image.width - selectionSize) / 2}px`;
+        selection.style.top = `${(image.height - selectionSize) / 2}px`;
     }
 
     selection.addEventListener('mousedown', (e) => {
         position.x = e.clientX;
         position.y = e.clientY;
 
-        selection.addEventListener('mousemove', moveSelection);
+        document.addEventListener('mousemove', moveSelection);
     });
 
     document.addEventListener('mouseup', () => {
-        selection.removeEventListener('mousemove', moveSelection)
+        document.removeEventListener('mousemove', moveSelection)
+    });
+
+    document.addEventListener('mouseleave', () => {
+        document.removeEventListener('mousemove', moveSelection)
     });
 
     function moveSelection(e) {
@@ -57,21 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
         target.x = parseInt(window.getComputedStyle(selection).left.slice(0, -2)) + (x - position.x);
         target.y = parseInt(window.getComputedStyle(selection).top.slice(0, -2)) + (y - position.y);
 
-        if (target.x >= boundaries.min_x && target.x <= (boundaries.max_x - selectionSize)) {
+        if (target.x >= 0 && target.x <= (boundaries.max_x - selectionSize)) {
             selection.style.left = `${target.x}px`;
-        } else{
-            if (target.x < boundaries.min_x) {
-                selection.style.left = `${boundaries.min_x}px`;
+        } else {
+            if (target.x < 0) {
+                selection.style.left = '0px';
             } else {
                 selection.style.left = `${boundaries.max_x - selectionSize}px`;
             }
         }
 
-        if (target.y >= boundaries.min_y && target.y <= (boundaries.max_y - selectionSize)) {
+        if (target.y >= 0 && target.y <= (boundaries.max_y - selectionSize)) {
             selection.style.top = `${target.y}px`;
         } else{
-            if (target.y < boundaries.min_y) {
-                selection.style.top = `${boundaries.min_y}px`;
+            if (target.y < 0) {
+                selection.style.top = '0px';
             } else {
                 selection.style.top = `${boundaries.max_y - selectionSize}px`;
             }

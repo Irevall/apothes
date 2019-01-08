@@ -2,7 +2,7 @@ const sqlite = require('sqlite');
 let db;
 
 function createTableImg() {
-    let sqlQuery = 'CREATE TABLE if not exists images (id INTEGER PRIMARY KEY, image_id TEXT NOT NULL, author TEXT, source TEXT, tags TEXT, date INTEGER, downloads INTEGER, approved BOOLEAN)';
+    let sqlQuery = 'CREATE TABLE if not exists images (id INTEGER PRIMARY KEY, image_id TEXT NOT NULL, source TEXT, tags TEXT, date INTEGER, downloads INTEGER, approved BOOLEAN)';
     return db.run(sqlQuery);
 }
 
