@@ -28,8 +28,8 @@ async function createUnique() {
     return id;
 }
 
-function writeFile(id, image) {
-    image = image.replace(/^data:image\/png;base64,/, '');
+function writeFile(id, image, regex) {
+    image = image.replace(regex, '');
 
     return new Promise(function (resolve, reject) {
         fs.writeFile(`./database/images_temp/${id}.png`, image, 'base64', (err) => {
@@ -43,17 +43,32 @@ function writeFile(id, image) {
     });
 }
 
-//add more promises, file validation and delete upload if can't connect to db
+//add more promises
 async function main(body) {
+    const regex = RegExp(/^data:image\/png;base64,/);
+
+    if (!regex.test(body.image)) {
+        return {status: 500, message: 'Not an image file.'};
+    }
+
     const id = await createUnique();
-    if (!await writeFile(id, body.image)) {
+    if (!await writeFile(id, body.image, regex)) {
         return {status: 500, message: 'File write error.'};
     }
 
-    await database.add(id, body).catch((err) => {
+    let response = await database.add(id, body).catch((err) => {
         console.log(err);
-        return {status: 500, message: 'Database error.'};
+        fs.unlink(`./database/images_temp/${id}.png`, (err2) => {
+            console.log(err2);
+        });
+        return err;
     });
+
+    if (response === true) {
+        return {status: 200, message: id}
+    } else {
+        return response
+    }
 }
 
 module.exports = main;

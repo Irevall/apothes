@@ -7,21 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style/generic.css"/>
     <title>Avatars for Steam - Home</title>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelector('.gallery').querySelectorAll('img').forEach((img) => {
-                img.addEventListener('click', () => {
-                    let temp = document.getElementsByTagName('template')[0].content;
-                    temp.querySelector('.sizes').querySelectorAll('img').forEach((img2) => {
-                        img2.src = img.src
-                    });
-                    console.log(img);
-                    temp.querySelector('.author').innerHTML = img.dataset.imageAuthor;
-                    temp.querySelector('.source').href = img.dataset.imageSource;
-                    let clone = temp.cloneNode(true);
-                    document.body.querySelector('main').appendChild(clone);
-                });
-            });
-        });
+
     </script>
 </head>
 <body>
@@ -50,7 +36,7 @@
 </template>
 
 <nav>
-    <a href="index.html"><img class="logo" src="img/temp_logo.png" alt="Logo"/></a>
+    <a href="this_used_to_be_index.html"><img class="logo" src="img/temp_logo.png" alt="Logo"/></a>
     <span>TOP</span>
     <span><a href="upload.html">Upload</a></span>
     <span>About</span>

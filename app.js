@@ -21,8 +21,8 @@ db.start();
 app.use(koaBody({ multipart: true }));
 
 app.use(serve('public'));
-app.use(serve('node_modules/normalize.css'));
-app.use(serve('database/'));
+app.use(serve('node_modules'));
+app.use(serve('database'));
 
 app.use(router.routes());
 

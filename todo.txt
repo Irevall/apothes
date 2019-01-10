@@ -1,0 +1,13 @@
+Frontend:
+/top
+/about
+logo
+prettier css
+/upload change image to canvas
+/upload allow negative scaling of selection if image scale >1
+
+Backend:
+admin panel for approval
+generate gallery
+more promises
+make it secure - ish?
