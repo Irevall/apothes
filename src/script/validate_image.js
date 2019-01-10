@@ -4,7 +4,7 @@ function validateResolution(file) {
 
     return new Promise(function (resolve, reject) {
         image.addEventListener('load', (e) => {
-            resolve( [image.width >= 184 && image.height >= 184, image.src] );
+            resolve( [image.width >= 184 && image.height >= 184, image] );
             reject( [false, Error('Uhh')] );
         }, {once: true});
     });

@@ -27,6 +27,11 @@
         color: #b8b6b4;
     }
 
+    #app {
+        min-width: 100vw;
+        min-height: 100vh;
+    }
+
     a {
         text-decoration: none;
         color: #b8b6b4;
@@ -46,6 +51,7 @@
         padding: 0;
         margin-right: 50px;
         width: max-content;
+        height: 100%;
         align-items: center;
         font-weight: bold;
 

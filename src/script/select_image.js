@@ -109,14 +109,22 @@
 //     });
 // }
 
-function main(initial) {
-    const selection = document.querySelector('#selection');
-    selection.addEventListener('mousemove', (e) => {
-        console.log(e.clientX);
-        console.log(e.clientY);
-    })
-}
-
-export default {
-    main
-}
+//
+// function move(number) {
+//     console.log(number);
+// }
+//
+// function main(initial) {
+//     const selection = document.querySelector('#selection');
+//     let number = 0;
+//
+//     selection.addEventListener('mousemove', (e) => {
+//         // console.log(e.clientX);
+//         // console.log(e.clientY);
+//         move(number++);
+//     })
+// }
+//
+// export default {
+//     main
+// }
