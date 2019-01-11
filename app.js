@@ -20,7 +20,7 @@ db.start();
 
 app.use(koaBody({ multipart: true }));
 
-app.use(serve('public'));
+app.use(serve('dist'));
 app.use(serve('node_modules'));
 app.use(serve('database'));
 

@@ -5,16 +5,18 @@
             <canvas ref="canvas" v-bind:width="canvas.width" v-bind:height="canvas.height"></canvas>
         </div>
         <form method="post" enctype="multipart/form-data">
-            <label id="img-file-label"><span>Choose</span> image to upload (.png) <input type="file" id="img-file" @change="validate" ref="img_file" accept=".png, .jpg, .jpeg"></label>
-            <label id="resolution-warning" class="warning" v-if="wrong.res">Selected file appears to be too small. Minimal size is 184x184.</label>
-            <label id="ext-warning" class="warning" v-if="wrong.ext">Selected file appears to be in wrong format. Only .png accepted.</label>
+            <label id="img-file-label"><span>Choose</span> image to upload<input type="file" id="img-file" @change="validate" ref="img_file" accept=".png, .jpg, .jpeg"></label>
+            <label id="resolution-warning" class="warning" v-if="warning.res">Selected file is too small. Minimal size is 184x184.</label>
+            <label id="ext-warning" class="warning" v-if="warning.ext">Selected file is in wrong format. Only .png and .jpg accepted.</label>
             <label id="img-source-label">
                 <input type="text" id="img-source" name="img-source" placeholder="Source" data-tooltip="Some text" data-tooltip-position="bottom"/>
                 <span class="tooltip">Include source like link to original art, name of the author and/or art piece</span>
             </label>
-            <label><input type="button" id="img-download" v-on:click="download" value="Download"/> the cropped image</label>
-            <label>Or <input type="button" id="img-upload" value="Upload"/> for everyone to see!</label>
-            <label id="upload-nofile" class="warning" v-if="wrong.ext">Selected file appears to be in wrong format. Only .png accepted.</label>
+            <label><input type="button" id="img-download" @click="download" value="Download"/> the cropped image</label>
+            <label id="download-nofile" class="warning" v-if="warning.down_nofile">Selected the file first.</label>
+            <label>Or <input type="button" id="img-upload" @click="upload" value="Upload"/> for everyone to see!</label>
+            <label id="upload-nofile" class="warning" v-if="warning.up_nofile">Selected the file first.</label>
+            <label id="upload-status" class="success">Successfully uploaded! Available at ><.</label>
         </form>
     </div>
 </template>
@@ -27,9 +29,11 @@
         data: function () {
             return {
                 img_source: "",
-                wrong: {
+                warning: {
                     res: false,
-                    ext: false
+                    ext: false,
+                    down_nofile: false,
+                    up_nofile: false,
                 },
                 mouse: {
                     position: {
@@ -56,19 +60,23 @@
             }
         },
         methods: {
-            validate: async function() {
+            validate: async function () {
+                this.resetWarns();
                 const response = await scripts.validate_image(this.$refs.img_file);
-                Object.keys(this.wrong).forEach((key) => {
-                   this.wrong[key] = false
-                });
+
                 if (response.success) {
                     this.drawCanvas(response.context);
                     document.querySelector('#selection').style.display = 'inherit';
                 } else {
-                    this.wrong[response.context] = true;
+                    this.warning[response.context] = true;
                 }
             },
-            drawCanvas: function(image) {
+            resetWarns: function() {
+                Object.keys(this.warning).forEach((key) => {
+                    this.warning[key] = false
+                });
+            },
+            drawCanvas: function (image) {
                 let canvas = this.$refs.canvas;
                 let ctx = canvas.getContext('2d');
 
@@ -86,25 +94,12 @@
                     resolve(true);
                 });
 
-                // this.canvas.width = Math.floor(image.width / this.canvas.scale);
-                // this.canvas.height = Math.floor(image.height / this.canvas.scale);
-                // canvas.width = Math.floor(image.width / this.canvas.scale);
-                // canvas.height = Math.floor(image.height / this.canvas.scale);
-
                 promise.then(() => {
                     ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, this.canvas.width, this.canvas.height);
                 });
 
             },
-            download: function() {
-            //     const file = this.$refs.img_file.files;
-            //
-            //     if (!file) {
-            //         console.log('no file');
-            //         return false;
-            //     }
-            },
-            selected: function(event) {
+            selected: function (event) {
                 this.mouse.position.x = event.clientX;
                 this.mouse.position.y = event.clientY;
                 this.mouse.down = true;
@@ -114,13 +109,13 @@
                 this.$root.$el.addEventListener('mouseup', () => {
                     this.mouse.down = false;
                     this.mouse.move = false;
-                }, { once: true });
+                }, {once: true});
                 window.addEventListener('mouseleave', () => {
                     this.mouse.down = false;
                     this.mouse.move = false;
-                }, { once: true });
+                }, {once: true});
             },
-            move: function(event) {
+            move: function (event) {
                 if (!(this.mouse.down && this.mouse.move)) {
                     return false;
                 }
@@ -153,11 +148,11 @@
                 this.mouse.position.x = currentPosition.x;
                 this.mouse.position.y = currentPosition.y;
             },
-            lastMove: function(event) {
+            lastMove: function (event) {
                 this.move(event);
                 this.mouse.move = false;
             },
-            resize: function(event) {
+            resize: function (event) {
                 const direction = (event.deltaY < 0) ? (1) : (-1);
                 let size = this.selection.size * (20 + direction) / 20;
 
@@ -180,7 +175,62 @@
                     }
                 }
                 this.selection.size = size;
-            }
+            },
+            crop: function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                const image = new Image();
+                image.src = window.URL.createObjectURL(this.$refs.img_file.files[0]);
+
+                canvas.width = 256;
+                canvas.height = 256;
+
+                return new Promise((resolve) => {
+                    image.addEventListener('load', () => {
+                        ctx.drawImage(image, Math.floor(this.selection.position.x * this.canvas.scale), Math.floor(this.selection.position.y * this.canvas.scale),
+                            Math.floor(this.selection.size * this.canvas.scale), Math.floor(this.selection.size * this.canvas.scale),
+                            0, 0, 256, 256);
+                        resolve(canvas);
+                    }, { once: true });
+                })
+            },
+            download: async function () {
+                this.resetWarns();
+                const file = this.$refs.img_file.files;
+                if (file.length !== 1) {
+                    this.warning.down_nofile = true;
+                    return false;
+                }
+
+                const canvas = await this.crop();
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL();
+                link.download = "test.png";
+                link.click();
+            },
+            upload: async function() {
+                this.resetWarns();
+                const file = this.$refs.img_file.files;
+                console.log(file);
+                if (file.length !== 1) {
+                    this.warning.up_nofile = true;
+                    return false;
+                }
+
+                const canvas = await this.crop();
+
+                let form = new FormData();
+                form.append('image', canvas.toDataURL());
+                form.append('source', document.querySelector('#img-source').value);
+
+                window.fetch('/upload', {
+                    method: 'POST',
+                    body: form
+                }).then(response => {
+                    console.log(response);
+                });
+            },
         }
     }
 </script>

@@ -1,12 +1,33 @@
 <template>
-    <div id="home">
-        <h1>Test</h1>
+    <div class="gallery">
+        <img
+                v-for="img in imgs"
+                v-bind:src="img.src"
+        />
     </div>
 </template>
 
 <script>
     export default {
-        name: "upload",
+        name: "home",
+        data: function () {
+            return {
+                imgs: [
+                    { src: require('../../database/images/image01.jpg') },
+                    { src: require('../../database/images/image02.jpg') },
+                    { src: require('../../database/images/image03.jpg') },
+                    { src: require('../../database/images/image04.jpg') },
+                    { src: require('../../database/images/image05.jpg') },
+                    { src: require('../../database/images/image06.jpg') },
+                    { src: require('../../database/images/image07.jpg') },
+                    { src: require('../../database/images/image08.jpg') },
+                ]
+            }
+        },
+        methods: {
+
+        }
+
     }
 </script>
 
@@ -19,7 +40,7 @@
         width: max-content;
     }
 
-    .gallery > .image > img {
+    .gallery > img {
         width: 184px;
     }
 
