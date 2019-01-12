@@ -3,8 +3,7 @@ Frontend:
 /about
 logo
 prettier css
-/upload change image to canvas
-/upload allow negative scaling of selection if image scale >1
+allow smaller selection if not uploading
 
 Backend:
 admin panel for approval

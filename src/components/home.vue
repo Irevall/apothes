@@ -13,16 +13,30 @@
         data: function () {
             return {
                 imgs: [
-                    { src: require('../../database/images/image01.jpg') },
-                    { src: require('../../database/images/image02.jpg') },
-                    { src: require('../../database/images/image03.jpg') },
-                    { src: require('../../database/images/image04.jpg') },
-                    { src: require('../../database/images/image05.jpg') },
-                    { src: require('../../database/images/image06.jpg') },
-                    { src: require('../../database/images/image07.jpg') },
-                    { src: require('../../database/images/image08.jpg') },
+                    // { src: require('../../database/images/image01.jpg') },
+                    // { src: require('../../database/images/image02.jpg') },
+                    // { src: require('../../database/images/image03.jpg') },
+                    // { src: require('../../database/images/image04.jpg') },
+                    // { src: require('../../database/images/image05.jpg') },
+                    // { src: require('../../database/images/image06.jpg') },
+                    // { src: require('../../database/images/image07.jpg') },
+                    // { src: require('../../database/images/image08.jpg') },
                 ]
             }
+        },
+        async created() {
+            window.fetch('/getImages', {
+                method: 'GET'
+            }).then(async (response) => {
+                return { status: response.status === 200, data: await response.json() };
+            }).then((parsedResponse) => {
+                if (!parsedResponse) {
+                    console.log('fail');
+                    return false;
+                }
+
+                console.log(parsedResponse.data);
+            });
         },
         methods: {
 
