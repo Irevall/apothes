@@ -78,6 +78,7 @@
     }
 
     article > h2 {
+        font-weight: 600;
         cursor: pointer;
     }
 
@@ -87,7 +88,6 @@
 
     article > span {
         display: none;
-        font-weight: bold;
     }
 
     article ul {

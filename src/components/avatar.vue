@@ -1,10 +1,9 @@
 <template>
     <div class="avatar">
-        <img src=""/>
-        <span>Source: d d d</span>
-        <span>Posted at: </span>
-        <span>Downloads: 0</span>
-        <!--<img v-bind:src=""/>-->
+        <img :src="image.link"/>
+        <span>Source: {{ image.source }}</span>
+        <span>Posted at: {{ image.date }}</span>
+        <span>Downloads: {{ image.downloads }}</span>
     </div>
 </template>
 
@@ -14,27 +13,32 @@
         data: function() {
             return {
                 image: {
-                    img: this.$route.params
+                    link: '',
+                    source: '',
+                    date: '',
+                    downloads: '',
                 }
             }
         },
         async created() {
-            console.log(this.$route.params.id);
-            // window.fetch(`/api/image/${this.$route.params.id}`, {
-            //     method: 'GET',
-            // })
-            //     .then(async (response) => {
-            //     return { status: response.status === 200, data: await response.json() };
-            // }).then((parsedResponse) => {
-            //     if (!parsedResponse) {
-            //         console.log('fail');
-            //         return false;
-            //     }
-            //
-            //     parsedResponse.data.forEach((img) => {
-            //         this.images.push({ link: require(`../../database/images/${img.image_id}.png`), source: img.source })
-            //     });
-            // });
+            this.image.link = `/${this.$route.params.id}.png`;
+            window.fetch(`/api/image/${this.$route.params.id}`, {
+                method: 'GET',
+            })
+                .then(async (response) => {
+                return { status: response.status === 200, data: await response.json() };
+            }).then((parsedResponse) => {
+                if (!parsedResponse) {
+                    console.log('fail');
+                    return false;
+                }
+
+                const date = new Date(parsedResponse.data[0].date);
+                console.log(('00' + date.getMinutes()).slice(2));
+                this.image.source = parsedResponse.data[0].source;
+                this.image.date = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}, ${('0' + date.getDate()).slice(-2)}/${('0' + date.getMonth() + 1).slice(-2)}/${date.getFullYear()}`;
+                this.image.downloads = parsedResponse.data[0].downloads;
+            });
         }
     }
 </script>

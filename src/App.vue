@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <nav>
-            <router-link to="/"><img class="logo" src="./assets/temp_logo.png" alt="Logo"/></router-link>
+            <router-link to="/"><img class="logo" src="./assets/temp_logo6.png" alt="Logo"/></router-link>
             <router-link to="/upload">Upload</router-link>
             <router-link to="/about">About</router-link>
         </nav>
@@ -17,13 +17,14 @@
 </script>
 
 <style>
-    @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600');
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans:600,700');
     @import '~normalize.css/normalize.css';
 
     body {
         font-family: 'Open Sans', sans-serif;
         background-color: #1b2838;
-        color: #b8b6b4;
+        color: #bfbdbb;
+        font-weight: 600;
     }
 
     #app {
@@ -33,7 +34,7 @@
 
     a {
         text-decoration: none;
-        color: #b8b6b4;
+        color: #bfbdbb;
     }
 
     nav {
@@ -41,22 +42,25 @@
         background-color: #171a21;
         font-size: 1.9em;
         height: 50px;
-        padding: 5px 0 5px 30px;
+        padding: 8px 0;
         border-bottom: black 2px solid;
     }
 
     nav > a {
         display: flex;
         padding: 0;
-        margin-right: 65px;
+        margin-right: 50px;
         width: max-content;
         height: 100%;
         align-items: center;
-        font-weight: bold;
+    }
 
+    nav > a:first-of-type {
+        margin-left: 60px;
     }
 
     .logo {
-        max-height: 100%;
+        margin-top: 5px;
+        max-height: 70%;
     }
 </style>

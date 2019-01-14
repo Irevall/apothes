@@ -5,7 +5,7 @@ module.exports = {
     mode: "development",
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist',
+        contentBase: ['./dist', './data/images'],
         proxy: {
             '/api': 'http://localhost:9010'
         },

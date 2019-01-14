@@ -16,7 +16,8 @@
             <label id="download-nofile" class="warning" v-if="warning.down_nofile">Selected the file first.</label>
             <label>Or <input type="button" id="img-upload" @click="upload" value="Upload"/> for everyone to see!</label>
             <label id="upload-nofile" class="warning" v-if="warning.up_nofile">Selected the file first.</label>
-            <label id="upload-status" class="success">Successfully uploaded! Available at ><.</label>
+            <label class="upload-status success" v-if="success.up">Success! Uploaded <router-link :to="'/avatar/' + upload_response">here</router-link>.</label>
+            <label class="upload-status warning" v-if="warning.up_fail">Failed. {{ upload_response }}. Try again later.</label>
         </form>
     </div>
 </template>
@@ -34,7 +35,12 @@
                     ext: false,
                     down_nofile: false,
                     up_nofile: false,
+                    up_fail: false,
                 },
+                success: {
+                    up: false
+                },
+                upload_response: '',
                 mouse: {
                     position: {
                         x: 0,
@@ -59,6 +65,9 @@
                 },
             }
         },
+        mounted() {
+            document.querySelector('#selection').grabbable = false;
+        },
         methods: {
             validate: async function () {
                 this.resetWarns();
@@ -73,7 +82,10 @@
             },
             resetWarns: function() {
                 Object.keys(this.warning).forEach((key) => {
-                    this.warning[key] = false
+                    this.warning[key] = false;
+                });
+                Object.keys(this.success).forEach((key) => {
+                    this.success[key] = false;
                 });
             },
             drawCanvas: function (image) {
@@ -227,10 +239,16 @@
                 window.fetch('/api/upload', {
                     method: 'POST',
                     body: form
-                })
-                //     .then(response => {
-                //     console.log(response);
-                // });
+                }).then(response => {
+                    if (response.status === 200) {
+                        this.success.up = true;
+                        this.upload_response = response.statusText;
+                    } else {
+                        this.warning.up_fail = true;
+                        this.upload_response = response.statusText;
+                    }
+                    console.log(response);
+                });
             },
         }
     }
@@ -241,8 +259,8 @@
 
     #upload {
         display: flex;
+        align-items: center;
         flex-direction: column;
-        max-width: max-content;
         margin: 50px auto 0;
     }
 
@@ -254,12 +272,6 @@
 
     form > * {
         margin: 0 0 5px;
-    }
-
-    form > p {
-        display: none;
-        font-weight: bold;
-        color: #aa2112;
     }
 
     form > #upload-success {
@@ -274,7 +286,7 @@
         padding: 0;
         border: none;
         background: none;
-        font-weight: bolder;
+        font-weight: 700;
         color: #8b9eb8;
         cursor: pointer;
     }
@@ -357,5 +369,9 @@
 
     .warning {
         color: #b5100a;
+    }
+
+    .success {
+        color: #389618;
     }
 </style>
