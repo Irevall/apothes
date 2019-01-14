@@ -2,7 +2,7 @@ const sqlite = require('sqlite');
 let db;
 
 async function main(id, data) {
-    db = await sqlite.open('database/generic.db').catch((err) => {
+    db = await sqlite.open('data/database.db').catch((err) => {
         console.log(err);
         return {status: 500, message: 'Database connection error.'};
     });

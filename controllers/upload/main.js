@@ -32,7 +32,7 @@ function writeFile(id, image, regex) {
     image = image.replace(regex, '');
 
     return new Promise(function (resolve, reject) {
-        fs.writeFile(`./database/images_temp/${id}.png`, image, 'base64', (err) => {
+        fs.writeFile(`./data/images/${id}.png`, image, 'base64', (err) => {
             if (err) {
                 console.log(err);
                 reject(false);
@@ -58,7 +58,7 @@ async function main(body) {
 
     let response = await database.add(id, body).catch((err) => {
         console.log(err);
-        fs.unlink(`./database/images_temp/${id}.png`, (err2) => {
+        fs.unlink(`./data/images/${id}.png`, (err2) => {
             console.log(err2);
         });
         return err;

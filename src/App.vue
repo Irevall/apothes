@@ -2,7 +2,6 @@
     <div id="app">
         <nav>
             <router-link to="/"><img class="logo" src="./assets/temp_logo.png" alt="Logo"/></router-link>
-            <router-link to="/top">Top</router-link>
             <router-link to="/upload">Upload</router-link>
             <router-link to="/about">About</router-link>
         </nav>
@@ -28,8 +27,8 @@
     }
 
     #app {
-        min-width: 100vw;
-        min-height: 100vh;
+        min-width: 100%;
+        min-height: 100%;
     }
 
     a {
@@ -40,16 +39,16 @@
     nav {
         display: flex;
         background-color: #171a21;
-        font-size: 1.7em;
+        font-size: 1.9em;
         height: 50px;
-        padding: 5px 0 5px 20px;
+        padding: 5px 0 5px 30px;
         border-bottom: black 2px solid;
     }
 
     nav > a {
         display: flex;
         padding: 0;
-        margin-right: 50px;
+        margin-right: 65px;
         width: max-content;
         height: 100%;
         align-items: center;

@@ -224,19 +224,20 @@
                 form.append('image', canvas.toDataURL());
                 form.append('source', document.querySelector('#img-source').value);
 
-                window.fetch('/upload', {
+                window.fetch('/api/upload', {
                     method: 'POST',
                     body: form
-                }).then(response => {
-                    console.log(response);
-                });
+                })
+                //     .then(response => {
+                //     console.log(response);
+                // });
             },
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    $border-color: 3px solid #425066;
+    $border-color: 3px solid #62738b;
 
     #upload {
         display: flex;
@@ -294,7 +295,7 @@
     #img-source:focus {
         cursor: auto;
         outline: none;
-        border: 3px solid #62738b;
+        border: 3px solid #55648b;
     }
 
     #img-source-label {
@@ -352,11 +353,6 @@
 
     #selection:hover {
         cursor: grab;
-    }
-
-    canvas {
-        /*width: 184px;*/
-        /*height: 184px;*/
     }
 
     .warning {

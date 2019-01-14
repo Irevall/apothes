@@ -8,12 +8,12 @@ const db = require('./controllers/db');
 
 const app = new Koa();
 
-if (!fs.existsSync('database')) {
-    fs.mkdirSync('database');
+if (!fs.existsSync('data')) {
+    fs.mkdirSync('data');
 }
 
-if (!fs.existsSync('database/images')) {
-    fs.mkdirSync('database/images');
+if (!fs.existsSync('data/images')) {
+    fs.mkdirSync('data/images');
 }
 
 db.start();
@@ -21,8 +21,7 @@ db.start();
 app.use(koaBody({ multipart: true }));
 
 app.use(serve('dist'));
-app.use(serve('node_modules'));
-app.use(serve('database'));
+app.use(serve('data/images'));
 
 app.use(router.routes());
 

@@ -1,9 +1,36 @@
 <template>
     <div class="gallery">
-        <img
-                v-for="img in imgs"
-                v-bind:src="img.src"
-        />
+        <div class="avatar" v-for="image in images">
+            <img
+                    class="img-main"
+                    v-bind:src="image.link"
+                    v-bind:data-source="image.source"
+                    @click="moreInfo"
+            />
+            <img
+                    class="img-background"
+                    v-bind:src="image.link"
+                    v-bind:data-source="image.source"
+            />
+        </div>
+
+        <div class="popout" ref="popout">
+            <div class="sizes">
+                <div class="img-full">
+                    <span>256 px</span>
+                    <img v-bind:src="popout.img"/>
+                </div>
+                <div class="img-medium">
+                    <span>160 px</span>
+                    <img v-bind:src="popout.img"/>
+                </div>
+                <div class="img-small">
+                    <span>Discord</span>
+                    <img v-bind:src="popout.img"/>
+                </div>
+            </div>
+            <span class="source">Source: {{ popout.source }}</span>
+        </div>
     </div>
 </template>
 
@@ -12,20 +39,15 @@
         name: "home",
         data: function () {
             return {
-                imgs: [
-                    // { src: require('../../database/images/image01.jpg') },
-                    // { src: require('../../database/images/image02.jpg') },
-                    // { src: require('../../database/images/image03.jpg') },
-                    // { src: require('../../database/images/image04.jpg') },
-                    // { src: require('../../database/images/image05.jpg') },
-                    // { src: require('../../database/images/image06.jpg') },
-                    // { src: require('../../database/images/image07.jpg') },
-                    // { src: require('../../database/images/image08.jpg') },
-                ]
+                images: [],
+                popout: {
+                    img: '',
+                    source: ''
+                }
             }
         },
         async created() {
-            window.fetch('/getImages', {
+            window.fetch('/api/images', {
                 method: 'GET'
             }).then(async (response) => {
                 return { status: response.status === 200, data: await response.json() };
@@ -35,11 +57,25 @@
                     return false;
                 }
 
-                console.log(parsedResponse.data);
+                parsedResponse.data.forEach((img) => {
+                    // this.images.push({ link: `${img.image_id}.png`, source: img.source })
+                });
             });
+
         },
         methods: {
+            moreInfo: function(event) {
+                console.log(event.target);
+                this.popout.img = event.target.src;
+                this.popout.source = event.target.dataset.source;
+                this.$refs.popout.style.display = 'inherit';
 
+                document.querySelector('body').addEventListener('click', (event) => {
+                    if (!event.path.includes(this.$refs.popout) && !event.target.classList.contains('img-main')) {
+                        this.$refs.popout.style.display = 'none';
+                    }
+                }, { once: true });
+            },
         }
 
     }
@@ -47,6 +83,7 @@
 
 <style lang="scss" scoped>
     .gallery {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(5, 184px);
         gap: 48px;
@@ -54,23 +91,43 @@
         width: max-content;
     }
 
-    .gallery > img {
+    .avatar {
+        height: 184px;
+        width: 184px;
+        position: relative;
+        box-shadow: 0 0 10px slategrey;
+        cursor: pointer;
+    }
+
+    .img-main {
+        position: absolute;
+        height: 184px;
         width: 184px;
     }
 
+    .img-background {
+        position: absolute;
+        filter: blur(2px);
+        z-index: -1;
+        height: 190px;
+        width: 190px;
+        top: -3px;
+        left: -3px;
+    }
+
     .popout {
+        display: none;
         position: fixed;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-        /*display: flex;*/
-        /*flex-direction: column;*/
-        /*flex: 1;*/
         width: max-content;
         height: max-content;
         margin: auto;
         padding: 10px;
+        outline: 2px #4a4f6e solid;
+        box-shadow: inset 0 0 5px #4a4f6e;
         background-color: #172438;
     }
 
@@ -101,13 +158,13 @@
     }
 
     .popout > .sizes > .img-full > img {
-        width: 184px;
-        height: 184px;
+        width: 256px;
+        height: 256px;
     }
 
     .popout > .sizes > .img-medium > img {
-        width: 120px;
-        height: 120px;
+        width: 160px;
+        height: 160px;
     }
 
     .popout > .sizes > .img-small > img {
@@ -116,19 +173,7 @@
         border-radius: 50%;
     }
 
-    .popout > .informations {
-        display: flex;
-        flex-direction: column;
-        max-width: calc(184px + 120px + 64px + 20px);
-    }
-
-    .informations span{
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .informations .source {
-
+    .source {
+        margin-top: 7px;
     }
 </style>

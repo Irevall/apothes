@@ -5,7 +5,10 @@ module.exports = {
     mode: "development",
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',
+        proxy: {
+            '/api': 'http://localhost:9010'
+        },
     },
     entry: {
         app: './src/main.js',
@@ -55,5 +58,6 @@ module.exports = {
         alias: {
             vue: 'vue/dist/vue.js'
         }
-    }
+    },
+
 };
