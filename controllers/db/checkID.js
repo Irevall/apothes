@@ -7,7 +7,7 @@ async function main(id) {
         return {status: 500, message: 'Database connection error.'};
     });
 
-    const result = await db.get('SELECT * FROM images WHERE image_id = ?', [id]).catch((err) => {
+    const result = await db.get('SELECT * FROM images WHERE id = ?', [id]).catch((err) => {
         console.log(err);
         return {status: 500, message: 'Database error.'};
     });
@@ -17,8 +17,7 @@ async function main(id) {
         return {status: 500, message: 'Database error.'};
     });
 
-    return true;
-    // return result === undefined;
+    return result === undefined;
 }
 
 module.exports = main;

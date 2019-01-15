@@ -1,43 +1,45 @@
 <template>
-    <div class="gallery">
-        <div class="avatar" v-for="image in images">
-            <img
-                    class="img-main"
-                    v-bind:src="image.link"
-                    v-bind:data-source="image.source"
-                    v-bind:data-id="image.id"
-                    @click="moreInfo"
-            />
-            <img
-                    class="img-background"
-                    v-bind:src="image.link"
-                    v-bind:data-source="image.source"
-            />
-        </div>
-        <div class="popout-background" @click="hidePopout" v-if="popout.show">
-            <div class="popout" v-bind:data-id="popout.id" v-if="popout.show" ref="popout">
-                <div class="buttons">
-                    <img src="../assets/report.png" title="Report" />
-                    <img src="../assets/close.png" title="Close" @click="popout.show = false" />
+    <div class="container">
+        <div class="gallery">
+            <div class="avatar" v-for="image in images">
+                <img
+                        class="img-main"
+                        v-bind:src="image.link"
+                        v-bind:data-source="image.source"
+                        v-bind:data-id="image.id"
+                        @click="moreInfo"
+                />
+                <img
+                        class="img-background"
+                        v-bind:src="image.link"
+                        v-bind:data-source="image.source"
+                />
+            </div>
+            <div class="popout-background" @click="hidePopout" v-if="popout.show">
+                <div class="popout" v-bind:data-id="popout.id" v-if="popout.show" ref="popout">
+                    <div class="buttons">
+                        <img src="../assets/report.png" title="Report" />
+                        <img src="../assets/close.png" title="Close" @click="popout.show = false" />
 
-                </div>
-                <div class="sizes">
-                    <div class="img-full">
-                        <span>256 px</span>
-                        <img v-bind:src="popout.link"/>
                     </div>
-                    <div class="img-medium">
-                        <span>160 px</span>
-                        <img v-bind:src="popout.link"/>
+                    <div class="sizes">
+                        <div class="img-full">
+                            <span>256 px</span>
+                            <img v-bind:src="popout.link"/>
+                        </div>
+                        <div class="img-medium">
+                            <span>160 px</span>
+                            <img v-bind:src="popout.link"/>
+                        </div>
+                        <div class="img-small">
+                            <span>Discord</span>
+                            <img v-bind:src="popout.link"/>
+                        </div>
                     </div>
-                    <div class="img-small">
-                        <span>Discord</span>
-                        <img v-bind:src="popout.link"/>
+                    <div class="info">
+                        <span class="source">Source: {{ popout.source }}</span>
+                        <span><router-link target="_blank" :to="'/avatar/' + popout.id">Permalink</router-link></span>
                     </div>
-                </div>
-                <div class="info">
-                    <span class="source">Source: {{ popout.source }}</span>
-                    <span><router-link :to="'/avatar/' + popout.id">Permalink</router-link></span>
                 </div>
             </div>
         </div>
@@ -49,6 +51,7 @@
         name: "home",
         data: function () {
             return {
+                images_data: [],
                 images: [],
                 popout: {
                     show: false,
@@ -70,8 +73,24 @@
                 }
 
                 parsedResponse.data.forEach((image) => {
-                    this.images.push({ id: image.id, link: `${image.id}.png`, source: image.source })
+                    this.images_data.push({ id: image.id, link: `${image.id}.png`, source: image.source });
                 });
+
+                this.loadImages();
+            });
+
+            document.addEventListener('scroll', (event) => {
+                if (document.querySelector('body').scrollHeight - (window.scrollY + window.innerHeight) < 400) {
+                    this.loadImages();
+                }
+            });
+
+            window.addEventListener('resize', (event) => {
+                if (document.querySelector('body').scrollHeight - (window.scrollY + window.innerHeight) < 400) {
+                    this.loadImages();
+                }
+
+                document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor(window.innerWidth / (184 + 35)))}, 184px)`;
             });
         },
         methods: {
@@ -86,6 +105,20 @@
                     return false;
                 }
                 this.popout.show = false;
+            },
+            loadImages: function() {
+                let imagesToLoad = 0;
+                const images_length = this.images.length;
+                const columns = window.getComputedStyle(document.querySelector('.gallery')).gridTemplateColumns.split(' ').length;
+                if (images_length === 0) {
+                    imagesToLoad = Math.min(this.images_data.length, Math.floor(Math.min(5, window.innerWidth / 200) * window.innerHeight / 200));
+                } else {
+                    imagesToLoad = Math.min(this.images_data.length - this.images.length, columns);
+                }
+
+                for (let i = 0; i < imagesToLoad; i++) {
+                    this.images.push(this.images_data[i + images_length]);
+                }
             }
         }
 
@@ -93,12 +126,22 @@
 </script>
 
 <style lang="scss" scoped>
+    .container {
+        padding: 0 2em 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
-        gap: 48px;
-        margin: 24px auto 0 auto;
-        max-width: 1200px;
+
+        /*grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));*/
+        grid-template-columns: repeat(5, 184px);
+        gap: 35px;
+        /*min-width: 100%;*/
+        /*max-width: 1200px;*/
+        /*width: 100%;*/
     }
 
     .avatar {
@@ -107,6 +150,7 @@
         position: relative;
         box-shadow: 0 0 10px slategrey;
         cursor: pointer;
+        overflow: hidden;
     }
 
     .img-main {

@@ -11,7 +11,7 @@
         <hr/>
         <article>
             <h2>I have an issue/found a bug</h2>
-            <span>link do github/issues</span>
+            <span>Please report them <a href="https://github.com/Irevall/apothes/issues" target="_blank">here.</a></span>
         </article>
         <hr/>
         <article>
@@ -69,7 +69,7 @@
 <style scoped>
     .about {
         max-width: 550px;
-        margin: 50px auto 0;
+        margin: 0 auto;
     }
 
     article * {

@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Irevall/steam-avatars.git"
+    "url": "git+https://github.com/Irevall/apothes.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Irevall/steam-avatars/issues"
+    "url": "https://github.com/Irevall/apothes/issues"
   },
-  "homepage": "https://github.com/Irevall/steam-avatars#readme",
+  "homepage": "https://github.com/Irevall/apothes#readme",
   "dependencies": {
     "koa": "^2.6.2",
     "koa-body": "^4.0.6",

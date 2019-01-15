@@ -44,6 +44,7 @@
         height: 50px;
         padding: 8px 0;
         border-bottom: black 2px solid;
+        margin-bottom: 60px;
     }
 
     nav > a {

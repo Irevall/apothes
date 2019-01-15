@@ -21,4 +21,24 @@ router.get('/api/image/:id', async (ctx) => {
     ctx.response.body = JSON.stringify(response);
 });
 
+router.post('/api/auth', async (ctx) => {
+    let response = await db.auth(ctx.request.body);
+    console.log(response);
+    if (response) {
+        ctx.response.status = 200;
+    } else {
+        ctx.response.status = 403;
+    }
+});
+
+router.get('/api/allData/auth=:auth', async (ctx) => {
+    let response = await db.allData(ctx.params.auth);
+    if (response) {
+        ctx.response.status = 200;
+        ctx.response.body = JSON.stringify(response);
+    } else {
+
+    }
+});
+
 module.exports = router;

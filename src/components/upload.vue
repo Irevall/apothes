@@ -261,7 +261,7 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        margin: 50px auto 0;
+        margin: 0 auto;
     }
 
     form {
