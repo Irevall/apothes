@@ -1,7 +1,8 @@
 <template>
     <div class="avatar">
-        <img :src="image.link"/>
-        <span><span class="title">Source:</span> {{ image.source }}</span>
+        <img :src="`${image.id}.png`"/>
+        <span><a :href="`${image.id}.png`" download @click="downloaded(image.id)">Download</a></span>
+        <span><span class="title">Source:</span> <span v-html="image.source"></span></span>
         <span><span class="title">Posted at:</span> {{ image.date }}</span>
         <span><span class="title">Downloads:</span> {{ image.downloads }}</span>
         <span class="non-approved" v-if="!image.approved">This image hasn't been approved by moderator yet, so it's not publicly visible.</span>
@@ -9,6 +10,8 @@
 </template>
 
 <script>
+    import shared from '../script/shared'
+
     export default {
         name: "avatar",
         data: function() {
@@ -23,7 +26,7 @@
             }
         },
         async created() {
-            this.image.link = `/${this.$route.params.id}.png`;
+            this.image.id = this.$route.params.id;
             window.fetch(`/api/image/${this.$route.params.id}`, {
                 method: 'GET',
             })
@@ -35,12 +38,23 @@
                     return false;
                 }
 
-                const date = new Date(parsedResponse.data[0].date);
-                this.image.source = parsedResponse.data[0].source;
-                this.image.date = `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}, ${('0' + date.getDate()).slice(-2)}/${('0' + date.getMonth() + 1).slice(-2)}/${date.getFullYear()}`;
+                this.image.source = shared.urlify(parsedResponse.data[0].source);
+                this.image.date = shared.dateFormat(parsedResponse.data[0].date);
                 this.image.downloads = parsedResponse.data[0].downloads;
-                this.image.approved = (parsedResponse.data[0].approved === 1)
+                this.image.approved = (parsedResponse.data[0].approved === 1);
             });
+        },
+        methods: {
+            downloaded: function(id) {
+                window.fetch(`/api/downloadCount/${id}`, {
+                    method: 'POST',
+                }).then((response) => {
+                    if (response.status === 200) {
+                        this.image.downloads += 1;
+                    }
+                    console.log(response);
+                })
+            }
         }
     }
 </script>

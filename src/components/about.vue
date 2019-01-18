@@ -4,19 +4,26 @@
             <h2>Why? What is this website for?</h2>
             <span>
                 This website is for cropping and sharing those crops. <br/>
-                I often change avatars on Discord or Steam and I couldn't find a good website for that since browsing random art gets boring after a while.
-                I also wanted an easier way to crop the images.
+                I often change avatars on Discord or Steam and I couldn't find a good website for that so I stuck to browsing random art on Deviantart or Reddit.
+                Here I can bundle art with croping in one website. <br/>
+                It's also important to me to support the artists that's why every upload requires including source.
+                If someone finds an avatar they like and decide to buy the original art I'll consider this project succesful.
             </span>
         </article>
         <hr/>
         <article>
+            <h2>I'm on mobile and...</h2>
+            <span>The website currently doesn't fully support mobile, as I can't figure out how to make cropping work.</span>
+        </article>
+        <hr/>
+        <article>
             <h2>I have an issue/found a bug</h2>
-            <span>Please report them <a href="https://github.com/Irevall/apothes/issues" target="_blank">here.</a></span>
+            <span>Please report them <a href="https://github.com/Irevall/apothes/issues" target="_blank">here.</a>. If the problem is with uploading please include the image.</span>
         </article>
         <hr/>
         <article>
             <h2>My art is featured here and I want it removed</h2>
-            <span>Write me an email at @ and I'll delete it.</span>
+            <span>Write me an email at kjm@irevall.me and I'll delete it.</span>
         </article>
         <hr/>
         <article>
@@ -30,7 +37,7 @@
                     <li>No 'gross' content</li>
                     <li>No controversial content</li>
                     <li>No low resolution content (as in upscaled and pixelated, pixel art is fine)</li>
-                    <li>Wrong sources will be corrected or removed</li>
+                    <li>Wrong sources will be corrected or the image will be removed</li>
 
                 </ul>
             </span>

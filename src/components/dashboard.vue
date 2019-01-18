@@ -7,19 +7,29 @@
         </form>
 
         <div class="data">
-            <div class="single-image" v-for="image in images" :data-id="image.id">
-                <div><img :src="`${image.id}.png`"/></div>
-                <div><span>{{ image.source }}</span></div>
-                <div><span>{{ image.date }}</span></div>
-                <div><span>{{ image.downloads }}</span></div>
-                <div><span>{{ image.approved }}</span></div>
-                <div><span>delete</span></div>
+            <div>
+                <div><span>Image</span></div>
+                <div><span>Source</span></div>
+                <div><span>Date</span></div>
+                <div><span>Downloads</span></div>
+                <div><span>Approve</span></div>
+                <div><span>Delete</span></div>
+            </div>
+            <div class="single-image" v-for="image in images">
+                <div :data-id="image.id"><img :src="`${image.id}.png`"/></div>
+                <div :data-source="image.source"><span v-html="image.sourceFormatted"></span></div>
+                <div :data-date="image.date"><span>{{ image.dateFormatted }}</span></div>
+                <div :data-downloads="image.downloads"><span>{{ image.downloads }}</span></div>
+                <div class="approve" :data-approved="image.approved"><img src="../assets/approved.svg" v-if="image.approved === 1" @click="approveImage(image.id, image.approved)"/> <img src="../assets/approve.svg" v-if="image.approved === 0" @click="approveImage(image.id, image.approved)"/></div>
+                <div><input class="delete" type="button" value="Delete" @click="deleteImage(image.id)"/></div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import shared from '../script/shared'
+
     export default {
         name: "dashboard",
         data: function() {
@@ -36,13 +46,13 @@
                 }).then((response) => {
                     if (response.status === 200) {
                         this.password = document.querySelector('#password').value;
-                        this.createDash();
+                        this.getData();
                     } else {
                         return false;
                     }
                 })
             },
-            createDash: function() {
+            getData: function() {
                 window.fetch(`/api/allData/auth=${this.password}`, {
                     method: 'GET',
                 }).then( async (response) => {
@@ -51,11 +61,43 @@
                     }
                     const data = await response.json();
 
-                    data.forEach((img) => {
-                        this.images.push(img);
-                    })
+                    data.forEach((image) => {
+                        image.sourceFormatted = shared.urlify(image.source);
+                        image.dateFormatted = shared.dateFormat(image.date);
+                        this.images.push(image);
+                    });
                 })
             },
+            deleteImage: function(id) {
+                if (!confirm(`Delete image with id: ${id}?`)) {
+                    return false;
+                }
+
+                window.fetch(`/api/delete/auth=${this.password}`, {
+                    method: 'POST',
+                    body: JSON.stringify({ id: id })
+                }).then((response) => {
+                    if (response.status === 200) {
+                        this.images = this.images.filter(image => image.id !== id);
+                    }
+                    console.log(response.statusText);
+                })
+            },
+            approveImage: function(id, approved) {
+                window.fetch(`/api/approve/auth=${this.password}`, {
+                    method: 'POST',
+                    body: JSON.stringify({ id: id, approved: Math.abs(approved - 1) })
+                }).then((response) => {
+                    if (response.status === 200) {
+                        this.images.find((image) => {
+                            if (image.id === id) {
+                                image.approved = Math.abs(approved - 1);
+                            }
+                        });
+                    }
+                    console.log(response);
+                })
+            }
         }
     }
 </script>
@@ -70,7 +112,6 @@
     form {
         display: flex;
         flex-direction: column;
-        width: 200px;
         margin: 0 auto;
     }
 
@@ -78,28 +119,32 @@
         margin-bottom: 5px;
     }
 
-    form > input[type=button] {
-        width: 100px;
-    }
-
     .data {
         display: grid;
-        grid-template-columns: 256px 150px 50px 50px 50px 50px;
+        grid-template-columns: 256px 90px 100px 90px 90px 90px;
         gap: 3px;
         background-color: white;
         width: auto;
     }
 
-    .data > .single-image {
+    .data > div {
         display: contents;
     }
 
-    .data > .single-image span {
+    .data > div span {
+        word-wrap: break-word;
         overflow-wrap: break-word;
+        text-align: center;
     }
 
-    .single-image > div {
+    .data > div > div {
         background-color: #1b2838;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
+    .approve > img {
+        width: 65px;
+    }
 </style>

@@ -282,15 +282,6 @@
         display: none;
     }
 
-    form input[type=button], #img-file-label span {
-        padding: 0;
-        border: none;
-        background: none;
-        font-weight: 700;
-        color: #8b9eb8;
-        cursor: pointer;
-    }
-
     #img-source {
         padding: 2px;
         background: none;
@@ -373,5 +364,14 @@
 
     .success {
         color: #389618;
+    }
+
+    #img-file-label span {
+        padding: 0;
+        border: none;
+        background: none;
+        font-weight: 700;
+        color: #8b9eb8;
+        cursor: pointer;
     }
 </style>

@@ -27,14 +27,19 @@
         font-weight: 600;
     }
 
+    input[type=button], a {
+        text-decoration: none;
+        padding: 0;
+        border: none;
+        background: none;
+        font-weight: 700;
+        color: #8b9eb8;
+        cursor: pointer;
+    }
+
     #app {
         min-width: 100%;
         min-height: 100%;
-    }
-
-    a {
-        text-decoration: none;
-        color: #bfbdbb;
     }
 
     nav {
@@ -54,6 +59,7 @@
         width: max-content;
         height: 100%;
         align-items: center;
+        color: #bfbdbb;
     }
 
     nav > a:first-of-type {
@@ -64,4 +70,5 @@
         margin-top: 5px;
         max-height: 70%;
     }
+
 </style>

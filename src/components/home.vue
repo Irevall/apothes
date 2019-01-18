@@ -37,7 +37,8 @@
                         </div>
                     </div>
                     <div class="info">
-                        <span class="source">Source: {{ popout.source }}</span>
+                        <a :href="popout.link" download @click="downloaded(popout.id)">Download</a>
+                        <span class="source">Source: <span v-html="popout.source"></span></span>
                         <span><router-link target="_blank" :to="'/avatar/' + popout.id">Permalink</router-link></span>
                     </div>
                 </div>
@@ -47,6 +48,8 @@
 </template>
 
 <script>
+    import shared from '../script/shared'
+
     export default {
         name: "home",
         data: function () {
@@ -97,7 +100,7 @@
             moreInfo: function(event) {
                 this.popout.id = event.target.dataset.id;
                 this.popout.link = event.target.src;
-                this.popout.source = event.target.dataset.source;
+                this.popout.source = shared.urlify(event.target.dataset.source);
                 this.popout.show = true;
             },
             hidePopout: function(event) {
@@ -119,6 +122,13 @@
                 for (let i = 0; i < imagesToLoad; i++) {
                     this.images.push(this.images_data[i + images_length]);
                 }
+            },
+            downloaded: function(id) {
+                window.fetch(`/api/downloadCount/${id}`, {
+                    method: 'POST',
+                }).then((response) => {
+                    console.log(response);
+                })
             }
         }
 
@@ -135,13 +145,9 @@
 
     .gallery {
         display: grid;
-
         /*grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));*/
         grid-template-columns: repeat(5, 184px);
         gap: 35px;
-        /*min-width: 100%;*/
-        /*max-width: 1200px;*/
-        /*width: 100%;*/
     }
 
     .avatar {
