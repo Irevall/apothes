@@ -1,16 +1,11 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 
-function main(password) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('data/password.txt', 'utf-8', (err, data) => {
-            if (err) {
-                console.log(err);
-                reject(false)
-            }
-
-            resolve(data === password);
-        });
+async function main(password) {
+    let auth = await fs.readFile('data/password.txt', 'utf-8').catch((err) => {
+        console.log(err);
+        return null;
     });
+    return auth === password;
 }
 
 module.exports = main;

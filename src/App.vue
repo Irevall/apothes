@@ -71,4 +71,11 @@
         max-height: 70%;
     }
 
+    .warning {
+        color: #b5100a;
+    }
+
+    .success {
+        color: #389618;
+    }
 </style>

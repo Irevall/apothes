@@ -10,38 +10,64 @@ router.post('/api/upload', async (ctx) => {
 
 router.get('/api/images', async (ctx) => {
     const response = await db.getImages();
-    ctx.response.status = 200;
-    ctx.response.body = JSON.stringify(response);
+    if (response) {
+        ctx.response.status = 200;
+        ctx.response.body = JSON.stringify(response);
+    } else {
+        ctx.response.status = 500;
+        ctx.response.message = 'Database error';
+    }
+
 });
 
 router.get('/api/image/:id', async (ctx) => {
     const response = await db.imageInfo(ctx.params.id);
-    ctx.response.status = 200;
-    ctx.response.body = JSON.stringify(response);
+    if (response) {
+        ctx.response.status = 200;
+        ctx.response.body = JSON.stringify(response);
+    } else {
+        ctx.response.status = 500;
+        ctx.response.message = 'Database error';
+    }
 });
 
 router.post('/api/downloadCount/:id', async (ctx) => {
-
     const response = await db.downloadCount(ctx.params.id);
+    ctx.response.status = response.status;
+    ctx.response.message = response.message;
+});
+
+router.post('/api/report/:id', async (ctx) => {
+    const response = await db.reportImage(ctx.params.id, ctx.request.body);
     ctx.response.status = response.status;
     ctx.response.message = response.message;
 });
 
 router.post('/api/auth', async (ctx) => {
     let response = await db.auth(ctx.request.body);
-    console.log('auth');
-    console.log(response);
-    if (!response) {
+    if (response === null) {
+        ctx.response.status = 500;
+        ctx.response.message = 'Database error';
+        return false;
+    } else if (!response) {
         ctx.response.status = 403;
+        ctx.response.message = 'Auth error';
+        return false;
     } else {
         ctx.response.status = 200;
+        ctx.response.message = 'Authed!';
     }
 });
 
 router.get('/api/allData/auth=:auth', async (ctx) => {
     let response = await db.auth(ctx.params.auth);
-    if (!response) {
+    if (response === null) {
+        ctx.response.status = 500;
+        ctx.response.message = 'Database error';
+        return false;
+    } else if (!response) {
         ctx.response.status = 403;
+        ctx.response.message = 'Auth error';
         return false;
     }
 
@@ -51,13 +77,19 @@ router.get('/api/allData/auth=:auth', async (ctx) => {
         ctx.response.body = JSON.stringify(response);
     } else {
         ctx.response.status = 500;
+        ctx.response.message = 'Database error';
     }
 });
 
 router.post('/api/delete/auth=:auth', async (ctx) => {
     let response = await db.auth(ctx.params.auth);
-    if (!response) {
+    if (response === null) {
+        ctx.response.status = 500;
+        ctx.response.message = 'Database error';
+        return false;
+    } else if (!response) {
         ctx.response.status = 403;
+        ctx.response.message = 'Auth error';
         return false;
     }
 
@@ -68,17 +100,20 @@ router.post('/api/delete/auth=:auth', async (ctx) => {
 
 router.post('/api/approve/auth=:auth', async (ctx) => {
     let response = await db.auth(ctx.params.auth);
-    if (!response) {
+    if (response === null) {
+        ctx.response.status = 500;
+        ctx.response.message = 'Database error';
+        return false;
+    } else if (!response) {
         ctx.response.status = 403;
+        ctx.response.message = 'Auth error';
         return false;
     }
 
     const body = JSON.parse(ctx.request.body);
-
     response = await db.approveImage(body.id, body.approved);
     ctx.response.status = response.status;
     ctx.response.message = response.message;
 });
-
 
 module.exports = router;

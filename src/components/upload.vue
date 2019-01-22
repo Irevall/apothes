@@ -358,14 +358,6 @@
         cursor: grab;
     }
 
-    .warning {
-        color: #b5100a;
-    }
-
-    .success {
-        color: #389618;
-    }
-
     #img-file-label span {
         padding: 0;
         border: none;

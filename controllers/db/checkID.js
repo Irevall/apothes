@@ -1,22 +1,23 @@
 const sqlite = require('sqlite');
-let db;
 
 async function main(id) {
-    db = await sqlite.open('data/database.db').catch((err) => {
-        console.log(err);
-        return {status: 500, message: 'Database connection error.'};
-    });
+    let db, result;
+    try {
+        db = await sqlite.open('data/database.db').catch((err) => {
+            throw(err);
+        });
 
-    const result = await db.get('SELECT * FROM images WHERE id = ?', [id]).catch((err) => {
+        result = await db.get('SELECT * FROM images WHERE id = ?', [id]).catch((err) => {
+            throw(err);
+        });
+    } catch(err) {
         console.log(err);
-        return {status: 500, message: 'Database error.'};
-    });
-
-    await db.close().catch((err) => {
-        console.log(err);
-        return {status: 500, message: 'Database error.'};
-    });
-
+        return null;
+    } finally {
+        await db.close().catch((err) => {
+            console.log(err);
+        });
+    }
     return result === undefined;
 }
 

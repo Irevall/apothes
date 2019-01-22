@@ -5,22 +5,19 @@ async function main(id) {
     let db;
     try {
         db = await sqlite.open('data/database.db').catch((err) => {
-            console.log(err);
-            throw('Database connection error.');
+            throw(err);
         });
 
         await db.all(`DELETE FROM images WHERE id=?`, id).catch((err) => {
-            console.log(err);
-            throw('Database error. Couldn\'t delete entry.');
+            throw(err);
         });
 
         await fs.unlink(`./data/images/${id}.png`).catch((err) => {
-            console.log(err);
-            throw('Database error. Couldn\'t delete file');
+            throw(err);
         });
     } catch(err) {
         console.log(err);
-        return { status: 500, message: err };
+        return { status: 500, message: 'Database error' };
     } finally {
         await db.close().catch((err) => {
             console.log(err);

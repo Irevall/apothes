@@ -1,29 +1,28 @@
 const sqlite = require('sqlite');
-let db;
-
-function createTableImg() {
-    let sqlQuery = 'CREATE TABLE if not exists images (id TEXT NOT NULL UNIQUE, source TEXT, date INTEGER, downloads INTEGER, approved BOOLEAN)';
-    return db.run(sqlQuery);
-}
-
-function createTableReports() {
-    let sqlQuery = 'CREATE TABLE if not exists reports (id INTEGER PRIMARY KEY, text TEXT, image_id TEXT, date INTEGER)';
-    return db.run(sqlQuery);
-}
 
 async function main() {
-    db = await sqlite.open('data/database.db').catch((err) => {
-        console.log(err);
-        return {status: 500, message: 'Database connection error.'};
-    });
+    let db;
+    try {
+        db = await sqlite.open('data/database.db').catch((err) => {
+            throw(err);
+        });
 
-    await createTableImg();
-    await createTableReports();
+        await db.run('CREATE TABLE if not exists images (id TEXT NOT NULL UNIQUE, source TEXT, date INTEGER, downloads INTEGER, approved BOOLEAN)').catch((err) => {
+            throw(err);
+        });
 
-    await db.close().catch((err) => {
+        await db.run('CREATE TABLE if not exists reports (id INTEGER PRIMARY KEY, text TEXT, image_id TEXT, date INTEGER)').catch((err) => {
+            throw(err);
+        });
+    } catch(err) {
         console.log(err);
-        return {status: 500, message: 'Database error.'};
-    });
+        return false;
+    } finally {
+        await db.close().catch((err) => {
+            console.log(err);
+        });
+    }
+    return true;
 }
 
 module.exports = main;

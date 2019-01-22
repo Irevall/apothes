@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const database = require('../db');
 
 function createID() {
@@ -15,60 +15,53 @@ function createID() {
 }
 
 async function createUnique() {
-    let id = '';
+    let id, response;
 
     do {
         id = createID();
-    } while (
-        false === await database.unique(id).catch((err) => {
-            return {status: 500, message: 'Database error.'};
-        })
-    );
+        response = await database.unique(id);
+        if (response === null) {
+            return false
+        }
+    } while (response === false);
 
     return id;
 }
 
-function writeFile(id, image, regex) {
-    image = image.replace(regex, '');
-
-    return new Promise(function (resolve, reject) {
-        fs.writeFile(`./data/images/${id}.png`, image, 'base64', (err) => {
-            if (err) {
-                console.log(err);
-                reject(false);
-            } else {
-                resolve(true);
-            }
-        });
-    });
-}
-
 //add more promises
 async function main(body) {
-    const regex = RegExp(/^data:image\/png;base64,/);
+    let id;
+    try {
+        const regex = RegExp(/^data:image\/png;base64,/);
+        if (!regex.test(body.image)) {
+            throw('Not an image file.');
+        }
 
-    if (!regex.test(body.image)) {
-        return {status: 500, message: 'Not an image file.'};
-    }
+        id = await createUnique();
+        if (!id) {
+            throw('Database error.');
+        }
 
-    const id = await createUnique();
-    if (!await writeFile(id, body.image, regex)) {
-        return {status: 500, message: 'File write error.'};
-    }
-
-    let response = await database.add(id, body).catch((err) => {
-        console.log(err);
-        fs.unlink(`./data/images/${id}.png`, (err2) => {
-            console.log(err2);
+        await fs.writeFile(`./data/images/${id}.png`, body.image.replace(regex, ''), 'base64').catch((err) => {
+           console.log(err);
+           throw('Database error.');
         });
-        return err;
-    });
 
-    if (response === true) {
-        return {status: 200, message: id}
-    } else {
-        return response
+        let response = await database.add(id, body);
+
+        if (!response) {
+            fs.unlink(`./data/images/${id}.png`).catch((err) => {
+                console.log(err);
+                throw('Database error.');
+            });
+
+            throw('Database error.')
+        }
+    } catch(err) {
+        console.log(err);
+        return { status: 500, message: err };
     }
+    return { status: 200, message: id };
 }
 
 module.exports = main;

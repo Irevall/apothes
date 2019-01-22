@@ -8,3 +8,4 @@ module.exports.allData = require('./getAllData.js');
 module.exports.deleteImage = require('./deleteImage.js');
 module.exports.approveImage = require('./approveImage.js');
 module.exports.downloadCount = require('./downloadCount.js');
+module.exports.reportImage = require('./reportImage.js');

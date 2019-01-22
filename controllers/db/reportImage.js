@@ -1,24 +1,24 @@
 const sqlite = require('sqlite');
 
-async function main() {
-    let db, response;
+async function main(id, report) {
+    let db;
     try {
         db = await sqlite.open('data/database.db').catch((err) => {
             throw(err);
         });
 
-        response = await db.all(`SELECT * FROM images ORDER BY date DESC`).catch((err) => {
+        await db.run(`INSERT INTO reports (report, image_id, date) VALUES ((?), (?), (?))`, [id, report, new Date()]).catch((err) => {
             throw(err);
         });
     } catch(err) {
         console.log(err);
-        return false;
+        return { status: 500, message: 'Database error' };
     } finally {
         await db.close().catch((err) => {
             console.log(err);
         });
     }
-    return response;
+    return { status: 200, message: 'Success!' };
 }
 
 module.exports = main;
