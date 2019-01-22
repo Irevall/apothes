@@ -35,6 +35,4 @@ async function main(fileInput) {
     }
 }
 
-export default {
-    main
-}
+module.exports = main;

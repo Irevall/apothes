@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import scripts from '../script';
+    import validate_image from '../script/validate_image';
 
     export default {
         name: "upload",
@@ -71,7 +71,7 @@
         methods: {
             validate: async function () {
                 this.resetWarns();
-                const response = await scripts.validate_image(this.$refs.img_file);
+                const response = await validate_image(this.$refs.img_file);
 
                 if (response.success) {
                     this.drawCanvas(response.context);
@@ -96,8 +96,12 @@
                 if (this.canvas.scale < 1) {
                     this.canvas.scale = 1;
                 }
+
                 this.selection.min = Math.floor(184 / this.canvas.scale);
                 this.selection.max = Math.min(image.height, image.width);
+                this.selection.position.x = 0;
+                this.selection.position.y = 0;
+                this.selection.size = 184;
 
                 //add meaningful resolve/reject... maybe?
                 let promise = new Promise((resolve) => {

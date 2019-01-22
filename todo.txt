@@ -1,12 +1,6 @@
 Frontend:
 /top
-/about
-logo
 prettier css
-allow smaller selection if not uploading
 
 Backend:
-admin panel for approval
-generate gallery
-more promises
 make it secure - ish?

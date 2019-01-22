@@ -6,6 +6,7 @@ import upload from '../components/upload.vue'
 import about from '../components/about.vue'
 import avatar from '../components/avatar.vue'
 import dashboard from '../components/dashboard.vue'
+import not_found from '../components/not_found.vue'
 
 Vue.use(Router);
 
@@ -35,6 +36,15 @@ export default new Router({
             path: '/dashboard',
             name: 'dashboard',
             component: dashboard
-        }
+        },
+        {
+            path: '/404',
+            name: 'not_found',
+            component: not_found
+        },
+        {
+            path: '*',
+            redirect: '/404'
+        },
     ]
 })

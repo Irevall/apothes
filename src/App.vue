@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <nav>
-            <router-link to="/"><img class="logo" src="./assets/temp_logo6.png" alt="Logo"/></router-link>
+            <router-link to="/"><img class="logo" src="./assets/logo.png" alt="Logo"/></router-link>
             <router-link to="/upload">Upload</router-link>
             <router-link to="/about">About</router-link>
         </nav>
