@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" @loadeddata="avatar_info.show = true">
         <div class="gallery">
             <div class="avatar" v-for="image in images">
                 <img
@@ -55,6 +55,7 @@
                     </div>
                 </div>
             </div>
+            <div :is="test"></div>
         </div>
     </div>
 </template>
@@ -82,6 +83,9 @@
                 }
             }
         },
+        mounted() {
+            document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
+        },
         async created() {
             window.fetch('/api/images', {
                 method: 'GET'
@@ -106,15 +110,10 @@
                 }
             });
 
-            document.addEventListener('DOMContentLoaded', () => {
-                document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
-            });
-
             window.addEventListener('resize', () => {
                 if (document.querySelector('body').scrollHeight - (window.scrollY + window.innerHeight) < 400) {
                     this.loadImages();
                 }
-
                 document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
             });
         },
@@ -177,8 +176,16 @@
                 this.report.sent = false;
                 this.report.failed = false;
                 this.report.none = false;
+            },
+            test: function() {
+                // console.log('xd');
+                // if (document.readyState === 'complete') {
+                //
+                //     document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
+                // }
+                // window.onload = document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
             }
-        }
+        },
 
     }
 </script>
@@ -194,7 +201,6 @@
     .gallery {
         display: grid;
         /*grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));*/
-        grid-template-columns: repeat(0, 184px);
         gap: 35px;
     }
 

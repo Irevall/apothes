@@ -6,5 +6,5 @@ new Vue({
     el: '#app',
     template: '<App/>',
     components: { App },
-    router,
-}).$mount('#app')
+    router
+}).$mount('#app');

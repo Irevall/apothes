@@ -13,9 +13,9 @@ Vue.use(Router);
 export default new Router({
     routes: [
         {
-          path: '/',
-          name: 'home',
-          component: home
+            path: '/',
+            name: 'home',
+            component: home,
         },
         {
             path: '/upload',
