@@ -83,9 +83,6 @@
                 }
             }
         },
-        mounted() {
-            document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
-        },
         async created() {
             window.fetch('/api/images', {
                 method: 'GET'
@@ -116,6 +113,9 @@
                 }
                 document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
             });
+        },
+        mounted() {
+            document.querySelector('.gallery').style.gridTemplateColumns = `repeat(${Math.min(5, Math.floor((window.innerWidth - 2 * 20) / (184 + 35)))}, 184px)`;
         },
         methods: {
             moreInfo: function (event) {
@@ -221,7 +221,7 @@
 
     .img-background {
         position: absolute;
-        filter: blur(2px);
+        filter: blur(3px);
         opacity: 1;
         z-index: -1;
         height: 190px;

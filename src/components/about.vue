@@ -18,7 +18,7 @@
         <hr/>
         <article>
             <h2>I have an issue/found a bug</h2>
-            <span>Please report them <a href="https://github.com/Irevall/apothes/issues" target="_blank">here.</a>. If the problem is with uploading please include the image.</span>
+            <span>Please report them <a href="https://github.com/Irevall/apothes/issues" target="_blank">here</a>. If the problem is with uploading please include the image.</span>
         </article>
         <hr/>
         <article>
@@ -98,7 +98,11 @@
     }
 
     article ul {
-        margin-left: 0px;
+        margin-left: 20px;
+    }
+
+    article a {
+        padding: 0;
     }
 
 </style>

@@ -4,7 +4,7 @@
             <div id="selection" @mousedown="selected" @wheel="resize" @mouseenter="mouse.move = true" v-bind:style="{ left: selection.position.x + 'px', top: selection.position.y + 'px', height: selection.size + 'px', width: selection.size + 'px'}"></div>
             <canvas ref="canvas" v-bind:width="canvas.width" v-bind:height="canvas.height"></canvas>
         </div>
-        <form method="post" enctype="multipart/form-data">
+        <form onsubmit="return false;">
             <label id="img-file-label"><span>Choose</span> image to upload<input type="file" id="img-file" @change="validate" ref="img_file" accept=".png, .jpg, .jpeg"></label>
             <label id="resolution-warning" class="warning" v-if="warning.res">Selected file is too small. Minimal size is 184x184.</label>
             <label id="ext-warning" class="warning" v-if="warning.ext">Selected file is in wrong format. Only .png and .jpg accepted.</label>
@@ -354,7 +354,7 @@
         padding: 0;
         width: 184px;
         height: 184px;
-        border: 3px solid red;
+        border: 2px solid #e564cc;
         box-sizing: border-box;
     }
 
